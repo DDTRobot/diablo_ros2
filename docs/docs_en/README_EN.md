@@ -11,7 +11,7 @@
 
 
 
-​	The diablo sdk based on serial communication, you can get started quickly through `ros2`. If you want to develop without ROS, you can also modify `CMakeLists` in [ROS](https://github.com/DDTRobot/diablo-sdk-v1) to compile only the source code.We will constantly update the package of `ros2`, hoping to be helpful to your robot development.
+​	The diablo sdk based on serial communication, you can get started quickly through `ros2`. If you want to develop without ROS, you can also modify `CMakeLists` in [ROS](https://github.com/DDTRobot/diablo-sdk-v1) to compile only the source code.We will constantly update the package of `ros2`, hoping to be helpful for your robot development.
 
 
 
