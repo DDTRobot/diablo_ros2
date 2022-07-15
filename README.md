@@ -42,6 +42,31 @@
 您可以在大多数 `Linux` 设备中编译我们的 SDK 源码。或者在支持 ros-foxy 的设备中直接编译我们提供的 ros 包。
 
 
+## Quick Start 快速开始
+
+1. 创建ros工程文件夹
+
+```bash
+#make sure you have build all dependence.
+
+sudo apt-get install python3-colcon-common-extensions
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+
+#clone API source code
+git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
+
+cd ~/catkin_ws
+colcon build
+source install/setup.bash
+
+#before starting the node , please check of serial port in diablo_ctrl.cpp is correct.
+ros2 run diablo_ctrl diablo_ctrl_node
+
+#run controller python script
+ros2 run diablo_teleop teleop_node 
+```
+
 
 ## Contents 目录
 
@@ -72,29 +97,4 @@
   > [motor angle 2 urdf angle](./diablo_visualise/diablo_simpose_trans)
 
   
-
-## Quick Start 快速开始
-
-1. 创建ros工程文件夹
-
-```bash
-#make sure you have build all dependence.
-
-sudo apt-get install python3-colcon-common-extensions
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
-
-#clone API source code
-git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
-
-cd ~/catkin_ws
-colcon build
-source install/setup.bash
-
-#before starting the node , please check of serial port in diablo_ctrl.cpp is correct.
-ros2 run diablo_ctrl diablo_ctrl_node
-
-#run controller python script
-ros2 run diablo_teleop teleop_node 
-```
 
