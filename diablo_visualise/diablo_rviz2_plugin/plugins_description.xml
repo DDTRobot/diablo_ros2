@@ -1,0 +1,11 @@
+<library path="diablo_rviz2_control_plugin">
+  <class
+    name="diablo_rviz2_control_plugin/MissionPanel"
+    type="diablo_rviz2_control_plugin::MissionPanel"
+    base_class_type="rviz_common::Panel"
+  >
+    <description>
+      Panel for control and display of status for diablo robot.
+    </description>
+  </class>
+</library>
