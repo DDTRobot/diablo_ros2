@@ -42,6 +42,34 @@
 You can compile our SDK source code in most `Linux` devices. Or directly compile the ROS package provided by us in the device that supports ROS foxy.
 
 
+  
+
+## Quick Start 
+
+1. Create ros project workspace
+
+```bash
+#make sure you have build all dependence.
+
+sudo apt-get install python3-colcon-common-extensions
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+
+#clone API source code
+git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
+
+cd ~/catkin_ws
+colcon build
+source install/setup.bash
+
+#before starting the node , please check of serial port in diablo_ctrl.cpp is correct.
+ros2 run diablo_ctrl diablo_ctrl_node
+
+#run controller python script
+ros2 run diablo_teleop teleop_node 
+```
+
+
 
 ## Contents 
 
@@ -70,31 +98,3 @@ The following is the ros2 node Directory:
   > [rviz2 Qt teleop UI]()
   >
   > [motor angle 2 urdf angle]()
-
-  
-
-## Quick Start 
-
-1. Create ros project workspace
-
-```bash
-#make sure you have build all dependence.
-
-sudo apt-get install python3-colcon-common-extensions
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
-
-#clone API source code
-git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
-
-cd ~/catkin_ws
-colcon build
-source install/setup.bash
-
-#before starting the node , please check of serial port in diablo_ctrl.cpp is correct.
-ros2 run diablo_ctrl diablo_ctrl_node
-
-#run controller python script
-ros2 run diablo_teleop teleop_node 
-```
-
