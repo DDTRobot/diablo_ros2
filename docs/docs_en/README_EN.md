@@ -88,10 +88,3 @@ The following is the ros2 node Directory:
 
   > [Robot basic movement ctrl msg](../../diablo_interfaces/motion_msgs)
 
-* [Ros rviz2 and gazebo example](../../diablo_visualise)
-
-  > [rviz2 rviz2 gazebo simulation](../../diablo_visualise/diablo_simulation)
-  >
-  > [rviz2 Qt teleop UI](../../diablo_visualise/diablo_rviz2_plugin)
-  >
-  > [motor angle 2 urdf angle](../../diablo_visualise/diablo_simpose_trans)
