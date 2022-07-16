@@ -55,7 +55,7 @@ cd ~/diablo_ws/src
 #clone API source code
 git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
 
-cd ~/catkin_ws
+cd ~/diablo_ws
 colcon build
 source install/setup.bash
 
