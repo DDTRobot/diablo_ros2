@@ -15,7 +15,6 @@
 
 ---
 
-![diabloRender](docs/img/diablo_robot_render.png)
 
 ## Basic Information 基本信息
 
