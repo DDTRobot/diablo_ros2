@@ -49,8 +49,8 @@
 #make sure you have build all dependence.
 
 sudo apt-get install python3-colcon-common-extensions
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
+mkdir -p ~/diablo_ws/src
+cd ~/diablo_ws/src
 
 #clone API source code
 git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
