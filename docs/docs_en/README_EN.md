@@ -53,7 +53,7 @@ mkdir -p ~/diablo_ws/src
 cd ~/diablo_ws/src
 
 #clone API source code
-git clone -b basic https://github.com/DDTRobot/diablo_sdk_v2.git
+git clone -b basic https://github.com/DDTRobot/diablo_ros2.git
 
 cd ~/diablo_ws
 colcon build
