@@ -12,7 +12,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     share_dir = get_package_share_directory('diablo_simulation')
 
-    xacro_file = os.path.join(share_dir, 'urdf', 'diablo_robot.xacro')
+    xacro_file = os.path.join(share_dir, 'urdf', 'diablo_simulation.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     robot_urdf = robot_description_config.toxml()
 
