@@ -1,4 +1,4 @@
-<p align="center"><strong>DIABLO SDK</strong></p>
+<p align="center"><strong>DIABLO ROS2</strong></p>
 <p align="center"><a href="https://github.com/Direcrt-Drive-Technology/diablo-sdk-v1/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-orange"/></a>
 <img alt="language" src="https://img.shields.io/badge/language-c++-red"/>
 <img alt="platform" src="https://img.shields.io/badge/platform-linux-l"/>
