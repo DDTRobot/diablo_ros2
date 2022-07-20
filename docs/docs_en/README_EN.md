@@ -14,6 +14,7 @@
 
 ---
 
+![diablo_robot_render](./docs/img/diablo_robot_render.jpg)
 
 ## Basic Information 
 
