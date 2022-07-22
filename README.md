@@ -37,7 +37,7 @@
 
 | Installation method | Supported platform[s] | Development Docs    | Official website                         |
 | ------------------- | --------------------- | ------------------- | ---------------------------------------- |
-| Source              | Linux , ros-foxy      | [DIABLO 开发手册]() | [Direct drive](https://directdrive.com/) |
+| Source              | Linux , ros-foxy      | [DIABLO 开发手册](https://diablo-sdk-docs.readthedocs.io/zh_CN/latest/index.html) | [Direct drive](https://directdrive.com/) |
 
 您可以在大多数 `Linux` 设备中编译我们的 SDK 源码。或者在支持 ros-foxy 的设备中直接编译我们提供的 ros 包。
 
