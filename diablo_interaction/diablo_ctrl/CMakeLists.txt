@@ -32,7 +32,6 @@ set(dependencies
   rclcpp
   diablo_body
   motion_msgs
-  sensor_msgs
   diablo_utils
 )
 
