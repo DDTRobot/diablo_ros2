@@ -48,6 +48,7 @@
 
 ```bash
 #make sure you have build all dependence.
+source /opt/tros/setup.bash
 
 sudo apt-get install python3-colcon-common-extensions
 mkdir -p ~/diablo_ws/src
