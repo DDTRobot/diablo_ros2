@@ -25,7 +25,7 @@
 
 - `X3pi` 中IO默认串口号是 `/dev/ttyS3`
 
-  > 树莓派中IO默认串口号是 `/dev/ttyAMA0`
+  > 树莓派中IO默认串口号是 `/dev/ttyAMA0`,如果您使用自定义的镜像，请[重新配置串口映射](https://diablo-sdk-docs.readthedocs.io/zh_CN/latest/pages/Installation/installing-sdk-on-pi.html)
   >
   > 您可以通过修改 [Hal.init("/dev/ttyS3")](./diablo_interaction/diablo_ctrl/src/diablo_ctrl.cpp) 并重新编译达到切换硬件的目的
 
