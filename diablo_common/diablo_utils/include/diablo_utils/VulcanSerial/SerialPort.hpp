@@ -7,22 +7,32 @@
 
 #pragma once
 
-#include <vector>
+
+// System headers
 #include <string>
-#include <fstream>
+#include <fstream> // For file I/O (reading/writing to COM port)
 #include <sstream>
+// #include <termios.h> // POSIX terminal control definitions (struct termios)
+// #include <asm/termios.h> // Terminal control definitions (struct termios)
+#include <vector>
 #include <asm/ioctls.h>
 #include <asm/termbits.h>
 
+// User headers
 #include "Exception.hpp"
 
 namespace VulcanSerial {
 
+        /// \brief      Represents the baud rate "types" that can be used with the serial port. STANDARD represents all
+        ///             the standard baud rates as provided by UNIX, CUSTOM represents a baud rate defined by an arbitray integer.
         enum class BaudRateType {
             STANDARD,
             CUSTOM,
         };
 
+        /// \brief		Strongly-typed enumeration of baud rates for use with the SerialPort class
+        /// \details    Specifies all the same baud rates as UNIX, as well as B_CUSTOM to specify your
+        ///             own. See https://linux.die.net/man/3/cfsetispeed for list of supported UNIX baud rates.
         enum class BaudRate {
             B_0,
             B_50,
@@ -47,6 +57,8 @@ namespace VulcanSerial {
             B_CUSTOM, // Placeholder
         };
 
+        /// \brief      Enumeration of all the valid num. of data bits. Must align with the options 
+        ///                 provided in termbits.h, i.e. CS5, CS6, CS7 and CS8.
         enum class NumDataBits {
             FIVE,
             SIX,
@@ -176,7 +188,7 @@ namespace VulcanSerial {
             void SetEcho(bool value);
 
             /// \brief		Opens the COM port for use.
-            /// \throws		CppLinuxSerial::Exception if device cannot be opened.
+            /// \throws		VulcanSerial::Exception if device cannot be opened.
             /// \note		Must call this before you can configure the COM port.
             /// \param      timeout_ms  Set to -1 to infinite timeout,or >0 to wait for data for a specified number of milliseconds). Timeout will
             ///             be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
@@ -189,7 +201,7 @@ namespace VulcanSerial {
             /// Wirte Function: This is a piece of shit. Maybe you can use templates instead of function overloading
             /// \brief		Sends a text message over the com port.
             /// \param		data		The data that will be written to the COM port.
-            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            /// \throws		VulcanSerial::Exception if state != OPEN.
             void Write(const std::string& data);
 
             void Write(const uint8_t *data, size_t length);
@@ -198,7 +210,7 @@ namespace VulcanSerial {
             
             /// \brief		Sends a binary message over the com port.
             /// \param		data		The data that will be written to the COM port.
-            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            /// \throws		VulcanSerial::Exception if state != OPEN.
             void WriteBinary(const std::vector<uint8_t>& data);
 
             
@@ -206,7 +218,7 @@ namespace VulcanSerial {
             /// \param		data		The object the read characters from the COM port will be saved to.
             /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
             ///                 to wait indefinitely for new data.
-            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            /// \throws		VulcanSerial::Exception if state != OPEN.
             void Read(std::string& data);
 
             int ReadChar (void);
@@ -214,12 +226,12 @@ namespace VulcanSerial {
             /// \param		data		The object the read uint8_t bytes from the COM port will be saved to.
             /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
             ///                 to wait indefinitely for new data.
-            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            /// \throws		VulcanSerial::Exception if state != OPEN.
             void ReadBinary(std::vector<uint8_t>& data);
 
 			/// \brief		Use to get number of bytes available in receive buffer.
             /// \returns    The number of bytes available in the receive buffer (ready to be read).
-            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            /// \throws		VulcanSerial::Exception if state != OPEN.
             int32_t Available();
 
             /// \brief          Use to get the state of the serial port
