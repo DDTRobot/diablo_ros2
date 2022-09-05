@@ -67,6 +67,32 @@ ros2 run diablo_ctrl diablo_ctrl_node
 ros2 run diablo_teleop teleop_node 
 ```
 
+2. 完整版编译
+
+```bash
+#make sure you have build all dependence.
+
+sudo apt-get install python3-colcon-common-extensions python3-pip
+sudo pip3 install rosdep
+sudo rosdep init
+rosdep update
+mkdir -p ~/diablo_ws/src
+cd ~/diablo_ws/src
+
+#clone API source code
+git clone https://github.com/DDTRobot/diablo_ros2.git
+cd ~/diablo_ws
+rosdep install -i --from-path src --rosdistro foxy -y
+
+colcon build
+source install/setup.bash
+
+#before starting the node , please check of serial port in diablo_ctrl.cpp is correct.
+ros2 run diablo_ctrl diablo_ctrl_node
+
+#run controller python script
+ros2 run diablo_teleop teleop_node 
+```
 
 ## Contents 目录
 
