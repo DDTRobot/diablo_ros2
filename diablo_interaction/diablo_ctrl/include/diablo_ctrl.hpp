@@ -32,15 +32,28 @@ public:
     {
         RCLCPP_INFO(this->get_logger(), "Sub node: %s.",name.c_str());
         sub_movement_cmd = this->create_subscription<motion_msgs::msg::MotionCtrl>("diablo/MotionCmd", 10, std::bind(&diabloCtrlNode::Motion_callback, this, std::placeholders::_1));
+        ctrl_msg_.value.up = 1.0;
     }
+    ~diabloCtrlNode();
 
+    void run_(void);
+    void heart_beat_loop(void);
+    std::shared_ptr<std::thread> thread_;
     DIABLO::OSDK::Movement_Ctrl* pMovementCtrl;
+    DIABLO::OSDK::Telemetry* pTelemetry;
+
+
+
 
 private:
     void Motion_callback(const motion_msgs::msg::MotionCtrl::SharedPtr msg);
-  
+
 private:
     rclcpp::Subscription<motion_msgs::msg::MotionCtrl>::SharedPtr sub_movement_cmd;
-    
-   
+    OSDK_Movement_Ctrl_t    cmd_value;
+    bool                onSend = true;
+    bool        thd_loop_mark_ = true;
+    motion_msgs::msg::MotionCtrl                                       ctrl_msg_;
 };
+
+

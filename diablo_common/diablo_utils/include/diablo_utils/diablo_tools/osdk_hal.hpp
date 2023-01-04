@@ -209,7 +209,7 @@ protected:
 
 
 /**
- * @brief HAL class for Raspiberry Pi
+ * @brief HAL class for Pi
  */
 class HAL_Pi: public HAL
 {
@@ -217,7 +217,7 @@ public:
     HAL_Pi(){}
 
     /**
-     * @brief initialize serial port for raspberry pi
+     * @brief initialize serial port for pi
      * @param dev name of the port
      * @param baud serial baudrate
      * @return 0 initialization ok \n

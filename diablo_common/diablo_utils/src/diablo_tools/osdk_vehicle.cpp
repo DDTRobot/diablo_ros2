@@ -15,12 +15,6 @@ uint8_t Vehicle::init(void)
         return 1;
     }
 
-    virtual_rc = new Virtual_RC(this);
-    if(!virtual_rc)
-    {
-        std::cerr<<"Failed to allocate memory for Virtual RC!\n"<<std::endl;
-        return 1;
-    }
 
     telemetry = new Telemetry(this);
     if(!telemetry)

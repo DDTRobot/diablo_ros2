@@ -4,10 +4,9 @@ using namespace std::chrono;
 
 void diablo_motors_publisher::motors_pub_init(void)
 {
-
     motors_Publisher_ = this->node_ptr->create_publisher<motion_msgs::msg::LegMotors>("diablo/sensor/Motors",10);
-    timer_ = this->node_ptr->create_wall_timer(100ms,std::bind(&diablo_motors_publisher::lazyMotorsPublisher, this));
-    this->vehicle->telemetry->configTopic(DIABLO::OSDK::TOPIC_MOTOR, OSDK_PUSH_DATA_10Hz);
+    timer_ = this->node_ptr->create_wall_timer(20ms,std::bind(&diablo_motors_publisher::lazyMotorsPublisher, this));
+    this->vehicle->telemetry->configTopic(DIABLO::OSDK::TOPIC_MOTOR, OSDK_PUSH_DATA_50Hz);
     this->vehicle->telemetry->configUpdate(); 
 }
 

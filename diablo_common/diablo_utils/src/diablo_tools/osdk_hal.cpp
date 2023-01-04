@@ -42,13 +42,11 @@ uint8_t HAL::serialSend_ack(const OSDK_Uart_Header_t& header, uint16_t& ack,
     // should receive reporting ack value within 100ms, once the ack packet has been sent
     static const chrono::duration<int, milli> timeout(100);
     {
-        //printf("ack\n");
         unique_lock<mutex> lock(serial_rx_mtx);
         if(!serial_rx_ack_cond.wait_for(lock, timeout, 
             std::bind(&DIABLO::OSDK::HAL::verifyRXType, this, cmd_set, cmd_id))) 
         {
-            printf("wait ack timeout\n");
-            return 2; //wait ack timeout
+            return 2;
         }
         ack = this->getACK();
     }

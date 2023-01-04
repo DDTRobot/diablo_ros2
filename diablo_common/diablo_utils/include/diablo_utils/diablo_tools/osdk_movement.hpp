@@ -131,6 +131,16 @@ public:
      */
     uint8_t SendTransformDownCmd();
 
+    /**
+     * @brief send Jump command (balance to car)
+     * 
+     * @return 0: Jump successfully \n
+     *         0xFF: Transform fail \n
+     */
+    uint8_t SendJumpCmd(uint8_t Jump_mark);
+
+    uint8_t SendDanceCmd(uint8_t dance_mark);
+
 public:
     OSDK_Movement_Ctrl_Mode_t   ctrl_mode_data;
     OSDK_Movement_Ctrl_t             ctrl_data;

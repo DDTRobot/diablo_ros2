@@ -76,7 +76,6 @@ uint8_t Virtual_RC::release_control()
 
 uint8_t Virtual_RC::SendVirtualRCCmd()
 {
-    //printf("send VRC Cmd\n");
     if(this->ctrl_status == CTRL_IDLE)
     {
         if(idle_buffer)
