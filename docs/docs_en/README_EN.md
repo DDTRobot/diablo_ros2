@@ -37,7 +37,7 @@
 
 | Installation method | Supported platform[s] | Development Docs  | Official website                         |
 | ------------------- | --------------------- | ----------------- | ---------------------------------------- |
-| Source              | Linux , ros-foxy      | [DIABLO Manual](https://diablo-sdk-docs.readthedocs.io/zh_CN/latest/index.html) | [Direct drive](https://directdrive.com/) |
+| Source              | Linux , ros-foxy      | [DIABLO Manual](https://diablo-sdk-docs.readthedocs.io/en/latest/index.html) | [Direct drive](https://directdrive.com/) |
 
 You can compile our SDK source code in most `Linux` devices. Or directly compile the ROS package provided by us in the device that supports ROS foxy.
 
