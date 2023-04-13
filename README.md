@@ -31,7 +31,12 @@
 
 - `ROS_DOMAIN_ID=5` , 可通过 `export ROS_DOMAIN_ID=5` 连接并控制局域网中 `DIABLO` 的功能节点。
 
+## Branch Information 分支信息
 
+仓库内含有`main`分支与`basic`分支，两个分支之间的差异如下
+
+- `main`分支 包含`diablo_ception`、`diablo_common`、`diablo_interaction`、`diablo_interfaces`、`docs`以及`diablo_visualise`，本分支包含额外的`rviz`仿真插件，因此更建议将此分支直接部署在个人电脑上以执行仿真环境，并通过相同的`ROS_DOMAIN_ID`域来发布或订阅节点。
+- `basic`分支 仅包含`diablo_ception`、`diablo_common`、`diablo_interaction`、`diablo_interfaces`、`docs`，不含`rviz`相关仿真插件，因此您可以将此分支直接部署到机器人上位机中。
 
 ## Installation 安装
 

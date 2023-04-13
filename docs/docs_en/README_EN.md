@@ -31,7 +31,12 @@
 
 - `ROS_DOMAIN_ID=5` , You can use `export ROS_ DOMAIN_ Id=5` connect and control the `Diablo` function node in the LAN.
 
+## Branch Information
 
+The repository contains `main` and `basic` branches, and the differences between the two branches are as follows
+
+- `Main` branch contains `diablo_ception`,`diablo_ common`,`diablo_ interaction`,`diablo_ Interfaces`,`docs` and `diablo_ Visualise`, this branch includes additional `rviz` simulation plugins, so it is more recommended to deploy this branch directly on a personal computer to execute the simulation environment and use the same `ROS_ DOMAIN_ ID` domain to publish or subscribe to nodes.
+- `Basic` branch only contains `diablo_ception`,`diablo_common`,`diablo_interaction`、`diablo_ Interfaces` and `docs`, do not include `rviz` related simulation plugins, so you can directly deploy this branch to the robot's upper computer.
 
 ## Installation 
 

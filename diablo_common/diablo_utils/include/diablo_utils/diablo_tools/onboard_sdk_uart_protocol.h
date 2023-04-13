@@ -168,11 +168,14 @@ typedef struct
     float      leg_split;
 }__attribute__((packed)) OSDK_Movement_Ctrl_t;
 
+
 typedef struct
 {   
     uint8_t       transform_up : 1;
     uint8_t     transform_down : 1;
-    uint8_t            reserve : 6;
+    uint8_t     jump           : 1;
+    uint8_t     automation     : 3;
+    uint8_t            reserve : 2;
 }__attribute__((packed)) OSDK_Transform_Cmd_t;
 
 /**
