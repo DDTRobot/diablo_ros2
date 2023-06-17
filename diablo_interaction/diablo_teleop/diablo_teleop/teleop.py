@@ -129,6 +129,9 @@ def main(args=None):
             elif key == 'c':
                 generMsgs(mode_mark=True,jump_mode=True)
                 teleop_cmd.publish(ctrlMsgs)
+            elif key == 't':
+                generMsgs(mode_mark=True,jump_mode=False)
+                teleop_cmd.publish(ctrlMsgs)
             elif key == 'f':
                 generMsgs(mode_mark=True,dance_mode=True)
                 teleop_cmd.publish(ctrlMsgs)
