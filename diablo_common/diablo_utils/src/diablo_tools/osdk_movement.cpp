@@ -224,6 +224,8 @@ uint8_t Movement_Ctrl::SendTransformUpCmd()
 
     transform_data.transform_down = 0;
     transform_data.transform_up = 1;
+    transform_data.jump = 0 ;
+    transform_data.automation = 0 ; //Azhen
     Header header;
     header.data.LEN = sizeof(OSDK_Uart_Header_t) + 
         sizeof(OSDK_Transform_Cmd_t) + OSDK_MISC_SIZE;
