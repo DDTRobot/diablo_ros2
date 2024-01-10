@@ -142,10 +142,10 @@ public:
     uint8_t SendDanceCmd(uint8_t dance_mark);
 
 public:
-    OSDK_Movement_Ctrl_Mode_t   ctrl_mode_data = {0};
-    OSDK_Movement_Ctrl_t             ctrl_data; = {0}
+    OSDK_Movement_Ctrl_Mode_t   ctrl_mode_data;
+    OSDK_Movement_Ctrl_t             ctrl_data; 
 
-    bool                         ctrl_mode_cmd = {0};
+    bool                         ctrl_mode_cmd;
 private:
     Vehicle*                           vehicle;
     ctrl_status_t                  ctrl_status;         // control mode of current SDK controller
