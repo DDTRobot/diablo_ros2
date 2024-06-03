@@ -4,7 +4,7 @@
   <name>diablo_rviz2_control_plugin</name>
   <version>1.0.0</version>
   <description>Rviz2 plugin for diablo</description>
-  <maintainer email="vulcanyjx@todo.com">vulcanyjx</maintainer>
+  <maintainer email="vulcanyjx@todo.com">vulcan</maintainer>
   <license>Apache License, Version 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

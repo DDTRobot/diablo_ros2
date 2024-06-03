@@ -1,12 +1,21 @@
-//https://stackoverflow.com/questions/14780517/toggle-switch-in-qt/38102598
+// Copyright (c) 2023 Direct Drive Technology Co., Ltd. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #include "switch.h"
 
-SwitchButton::SwitchButton(QWidget* parent, Style style)
-  : QWidget(parent)
-  , _value(true)
-  , _duration(100)
-  , _enabled(true)
+SwitchButton::SwitchButton(QWidget * parent, Style style)
+: QWidget(parent), _value(true), _duration(100), _enabled(true)
 {
   _pencolor = QColor(120, 120, 120);
 
@@ -52,24 +61,20 @@ SwitchButton::SwitchButton(QWidget* parent, Style style)
   _labeloff->move(31, 5);
   _labelon->move(15, 5);
   setFixedSize(QSize(60, 24));
-  if (style == Style::YESNO)
-  {
+  if (style == Style::YESNO) {
     _labeloff->setText("No");
     _labelon->setText("Yes");
     _labeloff->move(33, 5);
     _labelon->move(12, 5);
     setFixedSize(QSize(60, 24));
-  }
-  else if (style == Style::BOOL)
-  {
+  } else if (style == Style::BOOL) {
     _labeloff->setText("False");
     _labelon->setText("True");
     _labeloff->move(37, 5);
     _labelon->move(12, 5);
     setFixedSize(QSize(75, 24));
   }
-  if (style == Style::EMPTY)
-  {
+  if (style == Style::EMPTY) {
     _labeloff->setText("");
     _labelon->setText("");
     _labeloff->move(31, 5);
@@ -96,9 +101,9 @@ SwitchButton::~SwitchButton()
   delete __back_move;
 }
 
-void SwitchButton::paintEvent(QPaintEvent*)
+void SwitchButton::paintEvent(QPaintEvent *)
 {
-  QPainter* painter = new QPainter;
+  QPainter * painter = new QPainter;
   painter->begin(this);
   painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -106,41 +111,27 @@ void SwitchButton::paintEvent(QPaintEvent*)
   painter->setPen(pen);
 
   painter->setBrush(_pencolor);
-  painter->drawRoundedRect(0, 0
-    , width(), height()
-    , 12, 12);
+  painter->drawRoundedRect(0, 0, width(), height(), 12, 12);
 
   painter->setBrush(_lg);
-  painter->drawRoundedRect(1, 1
-    , width() - 2, height() - 2
-    , 10, 10);
+  painter->drawRoundedRect(1, 1, width() - 2, height() - 2, 10, 10);
 
   painter->setBrush(QColor(210, 210, 210));
-  painter->drawRoundedRect(2, 2
-    , width() - 4, height() - 4
-    , 10, 10);
+  painter->drawRoundedRect(2, 2, width() - 4, height() - 4, 10, 10);
 
-  if (_enabled)
-  {
+  if (_enabled) {
     painter->setBrush(_lg2);
-    painter->drawRoundedRect(3, 3
-      , width() - 6, height() - 6
-      , 7, 7);
-  }
-  else
-  {
+    painter->drawRoundedRect(3, 3, width() - 6, height() - 6, 7, 7);
+  } else {
     painter->setBrush(_lg_disabled);
-    painter->drawRoundedRect(3, 3
-      , width() - 6, height() - 6
-      , 7, 7);
+    painter->drawRoundedRect(3, 3, width() - 6, height() - 6, 7, 7);
   }
   painter->end();
 }
 
-void SwitchButton::mousePressEvent(QMouseEvent*)
+void SwitchButton::mousePressEvent(QMouseEvent *)
 {
-  if (!_enabled)
-    return;
+  if (!_enabled) return;
 
   __btn_move->stop();
   __back_move->stop();
@@ -153,11 +144,10 @@ void SwitchButton::mousePressEvent(QMouseEvent*)
   QSize final_size(width() - 4, hback);
 
   int xi = 2;
-  int y  = 2;
+  int y = 2;
   int xf = width() - 22;
 
-  if (_value)
-  {
+  if (_value) {
     final_size = QSize(hback, hback);
     initial_size = QSize(width() - 4, hback);
 
@@ -186,8 +176,7 @@ void SwitchButton::setEnabled(bool flag)
   _background->setEnabled(flag);
   if (flag)
     _labelon->show();
-  else
-  {
+  else {
     if (value())
       _labelon->show();
     else
@@ -196,25 +185,13 @@ void SwitchButton::setEnabled(bool flag)
   QWidget::setEnabled(flag);
 }
 
-void SwitchButton::setDuration(int time)
-{
-  _duration = time;
-}
+void SwitchButton::setDuration(int time) { _duration = time; }
 
-void SwitchButton::setValue(bool flag)
-{
-    _value = flag;
-}
+void SwitchButton::setValue(bool flag) { _value = flag; }
 
-void SwitchButton::setServiceName(std::string msg)
-{
-    _service_name = msg;
-}
+void SwitchButton::setServiceName(std::string msg) { _service_name = msg; }
 
-bool SwitchButton::value() const
-{
-  return _value;
-}
+bool SwitchButton::value() const { return _value; }
 
 void SwitchButton::_update()
 {
@@ -224,8 +201,7 @@ void SwitchButton::_update()
   int y = 2;
   int xf = width() - 22;
 
-  if (_value)
-  {
+  if (_value) {
     final_size = QSize(hback, hback);
     xf = 2;
   }
@@ -233,12 +209,8 @@ void SwitchButton::_update()
   _background->resize(final_size);
 }
 
-SwitchButton::SwitchBackground::SwitchBackground(QWidget* parent, QColor color, bool rect)
-  : QWidget(parent)
-  , _rect(rect)
-  , _borderradius(12)
-  , _color(color)
-  , _pencolor(QColor(170, 170, 170))
+SwitchButton::SwitchBackground::SwitchBackground(QWidget * parent, QColor color, bool rect)
+: QWidget(parent), _rect(rect), _borderradius(12), _color(color), _pencolor(QColor(170, 170, 170))
 {
   setFixedHeight(20);
 
@@ -252,55 +224,38 @@ SwitchButton::SwitchBackground::SwitchBackground(QWidget* parent, QColor color, 
   _lg_disabled.setColorAt(0.25, QColor(230, 230, 230));
   _lg_disabled.setColorAt(0.95, QColor(190, 190, 190));
 
-  if (_rect)
-    _borderradius = 0;
+  if (_rect) _borderradius = 0;
 
   _enabled = true;
 }
-SwitchButton::SwitchBackground::~SwitchBackground()
+SwitchButton::SwitchBackground::~SwitchBackground() {}
+void SwitchButton::SwitchBackground::paintEvent(QPaintEvent *)
 {
-}
-void SwitchButton::SwitchBackground::paintEvent(QPaintEvent*)
-{
-  QPainter* painter = new QPainter;
+  QPainter * painter = new QPainter;
   painter->begin(this);
   painter->setRenderHint(QPainter::Antialiasing, true);
 
   QPen pen(Qt::NoPen);
   painter->setPen(pen);
-  if (_enabled)
-  {
+  if (_enabled) {
     painter->setBrush(QColor(154, 190, 50));
-    painter->drawRoundedRect(0, 0
-      , width(), height()
-      , 10, 10);
+    painter->drawRoundedRect(0, 0, width(), height(), 10, 10);
 
     painter->setBrush(_lg);
-    painter->drawRoundedRect(1, 1, width()-2, height()-2, 8, 8);
-  }
-  else
-  {
+    painter->drawRoundedRect(1, 1, width() - 2, height() - 2, 8, 8);
+  } else {
     painter->setBrush(QColor(150, 150, 150));
-    painter->drawRoundedRect(0, 0
-      , width(), height()
-      , 10, 10);
+    painter->drawRoundedRect(0, 0, width(), height(), 10, 10);
 
     painter->setBrush(_lg_disabled);
     painter->drawRoundedRect(1, 1, width() - 2, height() - 2, 8, 8);
   }
   painter->end();
 }
-void SwitchButton::SwitchBackground::setEnabled(bool flag)
-{
-  _enabled = flag;
-}
+void SwitchButton::SwitchBackground::setEnabled(bool flag) { _enabled = flag; }
 
-SwitchButton::SwitchCircle::SwitchCircle(QWidget* parent, QColor color, bool rect)
-  : QWidget(parent)
-  , _rect(rect)
-  , _borderradius(12)
-  , _color(color)
-  , _pencolor(QColor(120, 120, 120))
+SwitchButton::SwitchCircle::SwitchCircle(QWidget * parent, QColor color, bool rect)
+: QWidget(parent), _rect(rect), _borderradius(12), _color(color), _pencolor(QColor(120, 120, 120))
 {
   setFixedSize(20, 20);
 
@@ -323,12 +278,10 @@ SwitchButton::SwitchCircle::SwitchCircle(QWidget* parent, QColor color, bool rec
 
   _enabled = true;
 }
-SwitchButton::SwitchCircle::~SwitchCircle()
+SwitchButton::SwitchCircle::~SwitchCircle() {}
+void SwitchButton::SwitchCircle::paintEvent(QPaintEvent *)
 {
-}
-void SwitchButton::SwitchCircle::paintEvent(QPaintEvent*)
-{
-  QPainter* painter = new QPainter;
+  QPainter * painter = new QPainter;
   painter->begin(this);
   painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -343,20 +296,14 @@ void SwitchButton::SwitchCircle::paintEvent(QPaintEvent*)
   painter->setBrush(QColor(210, 210, 210));
   painter->drawEllipse(2, 2, 16, 16);
 
-  if (_enabled)
-  {
+  if (_enabled) {
     painter->setBrush(_lg);
     painter->drawEllipse(3, 3, 14, 14);
-  }
-  else
-  {
+  } else {
     painter->setBrush(_lg_disabled);
     painter->drawEllipse(3, 3, 14, 14);
   }
 
   painter->end();
 }
-void SwitchButton::SwitchCircle::setEnabled(bool flag)
-{
-  _enabled = flag;
-}
+void SwitchButton::SwitchCircle::setEnabled(bool flag) { _enabled = flag; }

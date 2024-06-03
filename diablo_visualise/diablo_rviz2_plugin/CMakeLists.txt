@@ -51,16 +51,16 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNC
 
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME}
-  )
+)
 install(DIRECTORY data
- DESTINATION share/${PROJECT_NAME})
+  DESTINATION share/${PROJECT_NAME})
 install(
 DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/icons"
 DESTINATION "share/${PROJECT_NAME}")
 
 pluginlib_export_plugin_description_file(rviz_common plugins_description.xml)
 
-# replaces catkin_package(LIBRARIES ${PROJECT_NAME}) 
+# replaces catkin_package(LIBRARIES ${PROJECT_NAME})
 ament_export_libraries(${PROJECT_NAME})
 
 ament_package()
