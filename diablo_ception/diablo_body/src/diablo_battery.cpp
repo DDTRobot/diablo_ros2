@@ -1,45 +1,57 @@
+// Copyright (c) 2023 Direct Drive Technology Co., Ltd. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "diablo_battery.hpp"
 
 using namespace std::chrono;
 
 void diablo_battery_publisher::battery_pub_init(void)
 {
-
-    battery_Publisher_ = this->node_ptr->create_publisher<sensor_msgs::msg::BatteryState>("diablo/sensor/Battery",10);
-    timer_ = this->node_ptr->create_wall_timer(1s,std::bind(&diablo_battery_publisher::lazyBatteryPublisher, this));
-    this->vehicle->telemetry->configTopic(DIABLO::OSDK::TOPIC_POWER, OSDK_PUSH_DATA_1Hz);
-    this->vehicle->telemetry->configUpdate(); 
+  battery_Publisher_ =
+    this->node_ptr->create_publisher<sensor_msgs::msg::BatteryState>("diablo/sensor/Battery", 10);
+  timer_ = this->node_ptr->create_wall_timer(
+    1s, std::bind(&diablo_battery_publisher::lazyBatteryPublisher, this));
+  this->vehicle->telemetry->configTopic(DIABLO::OSDK::TOPIC_POWER, OSDK_PUSH_DATA_1Hz);
+  this->vehicle->telemetry->configUpdate();
 }
 
-void diablo_battery_publisher::lazyBatteryPublisher(void){
-    if(battery_Publisher_->get_subscription_count() > 0)
-    {
-        bool battery_Pub_mark = false;
-        if(this->vehicle->telemetry->newcome & 0x02)
-        {
-            battery_Pub_mark = true;
-            battery_msg_.voltage = this->vehicle->telemetry->power.voltage;
-            battery_msg_.current = this->vehicle->telemetry->power.current;
-            battery_msg_.capacity = this->vehicle->telemetry->power.capacitor_energy;
-            battery_msg_.percentage = (this->vehicle->telemetry->power.power_percent)*1.0;
-            battery_Publisher_->publish(battery_msg_);
-            this->vehicle->telemetry->eraseNewcomeFlag(0xFD);
-        }
-        if(battery_Pub_mark){
-
-            battery_timestamp = this->node_ptr->get_clock()->now();
-            battery_msg_.header.stamp = battery_timestamp;
-            battery_msg_.header.frame_id = "diablo_robot";
-            battery_Publisher_->publish(battery_msg_);
-            battery_Pub_mark = false;
-        }
-    }
-
-}
-
-diablo_battery_publisher::diablo_battery_publisher(rclcpp::Node::SharedPtr node_ptr,DIABLO::OSDK::Vehicle* vehicle)
+void diablo_battery_publisher::lazyBatteryPublisher(void)
 {
-    this->node_ptr = node_ptr;
-    this->vehicle = vehicle;
+  if (battery_Publisher_->get_subscription_count() > 0) {
+    bool battery_Pub_mark = false;
+    if (this->vehicle->telemetry->newcome & 0x02) {
+      battery_Pub_mark = true;
+      battery_msg_.voltage = this->vehicle->telemetry->power.voltage;
+      battery_msg_.current = this->vehicle->telemetry->power.current;
+      battery_msg_.capacity = this->vehicle->telemetry->power.capacitor_energy;
+      battery_msg_.percentage = (this->vehicle->telemetry->power.power_percent) * 1.0;
+      battery_Publisher_->publish(battery_msg_);
+      this->vehicle->telemetry->eraseNewcomeFlag(0xFD);
+    }
+    if (battery_Pub_mark) {
+      battery_timestamp = this->node_ptr->get_clock()->now();
+      battery_msg_.header.stamp = battery_timestamp;
+      battery_msg_.header.frame_id = "diablo_robot";
+      battery_Publisher_->publish(battery_msg_);
+      battery_Pub_mark = false;
+    }
+  }
+}
 
+diablo_battery_publisher::diablo_battery_publisher(
+  rclcpp::Node::SharedPtr node_ptr, DIABLO::OSDK::Vehicle * vehicle)
+{
+  this->node_ptr = node_ptr;
+  this->vehicle = vehicle;
 }

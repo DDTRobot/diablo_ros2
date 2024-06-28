@@ -1,245 +1,252 @@
-//!
-//! @file 			SerialPort.hpp
-//! @author 		Vulcan YJX <vulcanai@163.com> 
-//! @created		2022-06-07
-//! @last-modified 	2022-06-10
-//! @brief			The main serial port class.
+// Copyright (c) 2023 Direct Drive Technology Co., Ltd. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #pragma once
 
-
 // System headers
-#include <string>
-#include <fstream> // For file I/O (reading/writing to COM port)
+#include <fstream>  // For file I/O (reading/writing to COM port)
 #include <sstream>
+#include <string>
 // #include <termios.h> // POSIX terminal control definitions (struct termios)
 // #include <asm/termios.h> // Terminal control definitions (struct termios)
 #include <vector>
-#include <asm/ioctls.h>
-#include <asm/termbits.h>
+
+#include "asm/ioctls.h"
+#include "asm/termbits.h"
 
 // User headers
 #include "Exception.hpp"
 
-namespace VulcanSerial {
+namespace VulcanSerial
+{
 
-        /// \brief      Represents the baud rate "types" that can be used with the serial port. STANDARD represents all
-        ///             the standard baud rates as provided by UNIX, CUSTOM represents a baud rate defined by an arbitray integer.
-        enum class BaudRateType {
-            STANDARD,
-            CUSTOM,
-        };
+/// \brief Represents the baud rate "types" that can be used with the serial port.
+/// STANDARD represents all
+/// the standard baud rates as provided by UNIX, CUSTOM represents a baud rate defined
+/// by an arbitray integer.
+enum class BaudRateType {
+  STANDARD,
+  CUSTOM,
+};
 
-        /// \brief		Strongly-typed enumeration of baud rates for use with the SerialPort class
-        /// \details    Specifies all the same baud rates as UNIX, as well as B_CUSTOM to specify your
-        ///             own. See https://linux.die.net/man/3/cfsetispeed for list of supported UNIX baud rates.
-        enum class BaudRate {
-            B_0,
-            B_50,
-            B_75,
-            B_110,
-            B_134,
-            B_150,
-            B_200,
-            B_300,
-            B_600,
-            B_1200,
-            B_1800,
-            B_2400,
-            B_4800,
-            B_9600,
-            B_19200,
-            B_38400,
-            B_57600,
-            B_115200,
-            B_230400,
-            B_460800,
-            B_CUSTOM, // Placeholder
-        };
+/// \brief Strongly-typed enumeration of baud rates for use with the SerialPort class
+/// \details Specifies all the same baud rates as UNIX, as well as B_CUSTOM to specify your
+/// own. See https://linux.die.net/man/3/cfsetispeed for list of supported UNIX baud rates.
+enum class BaudRate {
+  B_0,
+  B_50,
+  B_75,
+  B_110,
+  B_134,
+  B_150,
+  B_200,
+  B_300,
+  B_600,
+  B_1200,
+  B_1800,
+  B_2400,
+  B_4800,
+  B_9600,
+  B_19200,
+  B_38400,
+  B_57600,
+  B_115200,
+  B_230400,
+  B_460800,
+  B_CUSTOM,  // Placeholder
+};
 
-        /// \brief      Enumeration of all the valid num. of data bits. Must align with the options 
-        ///                 provided in termbits.h, i.e. CS5, CS6, CS7 and CS8.
-        enum class NumDataBits {
-            FIVE,
-            SIX,
-            SEVEN,
-            EIGHT,
-        };
+/// \brief Enumeration of all the valid num. of data bits. Must align with the options
+/// provided in termbits.h, i.e. CS5, CS6, CS7 and CS8.
+enum class NumDataBits {
+  FIVE,
+  SIX,
+  SEVEN,
+  EIGHT,
+};
 
-        enum class Parity {
-            NONE,
-            EVEN,
-            ODD,
-        };
+enum class Parity {
+  NONE,
+  EVEN,
+  ODD,
+};
 
-        enum class NumStopBits {
-            ONE,
-            TWO,
-        };
+enum class NumStopBits {
+  ONE,
+  TWO,
+};
 
-        /// \brief      Represents the state of the serial port.
-        enum class State {
-            CLOSED,
-            OPEN,
-        };
+/// \brief Represents the state of the serial port.
+enum class State {
+  CLOSED,
+  OPEN,
+};
 
-    /// \brief		SerialPort object is used to perform rx/tx serial communication.
-    class SerialPort {
-            
-             private:
-                 
-            /// \brief      Sets the read timeout (in milliseconds)/blocking mode.
-            /// \details    Only call when state != OPEN. This method manupulates VMIN and VTIME.
-            /// \param      timeout_ms  Set to -1 to infinite timeout, 0 to return immediately with any data (non
-            ///             blocking, or >0 to wait for data for a specified number of milliseconds). Timeout will
-            ///             be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
-            ///             25500ms (another Linux API restriction).
-            void SetTimeout(int32_t timeout_ms);
-            
-            /// \brief		Configures the tty device as a serial port.
-            /// \warning    Device must be open (valid file descriptor) when this is called.
-            void ConfigureTermios();
+/// \brief SerialPort object is used to perform rx/tx serial communication.
+class SerialPort
+{
+private:
+  /// \brief Sets the read timeout (in milliseconds)/blocking mode.
+  /// \details Only call when state != OPEN. This method manupulates VMIN and VTIME.
+  /// \param timeout_ms Set to -1 to infinite timeout, 0 to return immediately with any data (non
+  /// blocking, or >0 to wait for data for a specified number of milliseconds). Timeout will
+  /// be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
+  /// 25500ms (another Linux API restriction).
+  void SetTimeout(int32_t timeout_ms);
 
-            // void SetTermios(termios myTermios);
+  /// \brief Configures the tty device as a serial port.
+  /// \warning Device must be open (valid file descriptor) when this is called.
+  void ConfigureTermios();
 
-            /// \brief		Returns a populated termios2 structure for the serial port pointed to by the file descriptor.
-            termios2 GetTermios2();
+  // void SetTermios(termios myTermios);
 
-            /// \brief      Assigns the provided tty settings to the serial port pointed to by the file descriptor.
-            void SetTermios2(termios2 tty);
+  // Returns a populated termios2 structure for the serial port pointed to by the file descriptor.
+  termios2 GetTermios2();
 
-            /// \brief      Keeps track of the serial port's state.
-            State state_;
+  // Assigns the provided tty settings to the serial port pointed to by the file descriptor.
+  void SetTermios2(termios2 tty);
 
-            /// \brief      The file path to the serial port device (e.g. "/dev/ttyUSB0").
-            std::string device_;
+  // Keeps track of the serial port's state.
+  State state_;
 
-            /// \brief      The type of baud rate that the user has specified.
-            BaudRateType baudRateType_;
+  /// \brief The file path to the serial port device (e.g. "/dev/ttyUSB0").
+  std::string device_;
 
-            /// \brief      The current baud rate if baudRateType_ == STANDARD.
-            BaudRate baudRateStandard_;
+  /// \brief The type of baud rate that the user has specified.
+  BaudRateType baudRateType_;
 
-            /// \brief      The current baud rate if baudRateType_ == CUSTOM.
-            speed_t baudRateCustom_;
+  /// \brief The current baud rate if baudRateType_ == STANDARD.
+  BaudRate baudRateStandard_;
 
-            /// \brief      The num. of data bits. Defaults to 8 (most common).
-            NumDataBits numDataBits_ = NumDataBits::EIGHT;
+  /// \brief The current baud rate if baudRateType_ == CUSTOM.
+  speed_t baudRateCustom_;
 
-            /// \brief      The parity. Defaults to none (most common).
-            Parity parity_ = Parity::NONE;
+  /// \brief The num. of data bits. Defaults to 8 (most common).
+  NumDataBits numDataBits_ = NumDataBits::EIGHT;
 
-            /// \brief      The num. of stop bits. Defaults to 1 (most common).
-            NumStopBits numStopBits_ = NumStopBits::ONE;
+  /// \brief The parity. Defaults to none (most common).
+  Parity parity_ = Parity::NONE;
 
-            /// \brief		The file descriptor for the open file. This gets written to when Open() is called.
-            int fileDesc_;
+  /// \brief The num. of stop bits. Defaults to 1 (most common).
+  NumStopBits numStopBits_ = NumStopBits::ONE;
 
-            bool echo_;
+  /// \brief The file descriptor for the open file. This gets written to when Open() is called.
+  int fileDesc_;
 
-            int32_t timeout_ms_;
+  bool echo_;
 
-            std::vector<char> readBuffer_;
-            unsigned char readBufferSize_B_;
+  int32_t timeout_ms_;
 
-            static constexpr BaudRate defaultBaudRate_ = BaudRate::B_460800;
-            static constexpr int32_t defaultTimeout_ms_ = -1;
-            static constexpr unsigned char defaultReadBufferSize_B_ = 255;
+  std::vector<char> readBuffer_;
+  unsigned char readBufferSize_B_;
 
+  static constexpr BaudRate defaultBaudRate_ = BaudRate::B_460800;
+  static constexpr int32_t defaultTimeout_ms_ = -1;
+  static constexpr unsigned char defaultReadBufferSize_B_ = 255;
 
-        public:
-            /// \brief		Default constructor. You must specify at least the device before calling Open().
-            SerialPort();
+public:
+  /// \brief Default constructor. You must specify at least the device before calling Open().
+  SerialPort();
 
-            /// \brief		Constructor that sets up serial port with the basic (required) parameters.
-            SerialPort(const std::string &device, BaudRate baudRate);
+  /// \brief Constructor that sets up serial port with the basic (required) parameters.
+  SerialPort(const std::string & device, BaudRate baudRate);
 
-            /// \brief		Constructor that sets up serial port and allows the user to specify all the common parameters.
-            SerialPort(const std::string &device, BaudRate baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits);
+  /// \brief Constructor that sets up serial port and allows the user to
+  /// specify all the common parameters.
+  SerialPort(
+    const std::string & device, BaudRate baudRate, NumDataBits numDataBits, Parity parity,
+    NumStopBits numStopBits);
 
-            /// \brief		Constructor that sets up serial port with the basic parameters, and a custom baud rate.
-            SerialPort(const std::string &device, speed_t baudRate);
+  /// \brief Constructor that sets up serial port with the basic parameters, and a custom baud rate.
+  SerialPort(const std::string & device, speed_t baudRate);
 
-            /// \brief		Destructor. Closes serial port if still open.
-            virtual ~SerialPort();
+  /// \brief Destructor. Closes serial port if still open.
+  virtual ~SerialPort();
 
-            /// \brief		Sets the device to use for serial port communications.
-            /// \details    Method can be called when serial port is in any state.
-            void SetDevice(const std::string &device);
+  /// \brief Sets the device to use for serial port communications.
+  /// \details Method can be called when serial port is in any state.
+  void SetDevice(const std::string & device);
 
-            /// \brief      Call this to set a standard baud rate.
-            void SetBaudRate(BaudRate baudRate);
+  /// \brief Call this to set a standard baud rate.
+  void SetBaudRate(BaudRate baudRate);
 
-            /// \brief      Call this to set a custom baud rate.
-            void SetBaudRate(speed_t baudRate);
+  /// \brief Call this to set a custom baud rate.
+  void SetBaudRate(speed_t baudRate);
 
-            /// \brief      Call this to set the num. of data bits.
-            void SetNumDataBits(NumDataBits numDataBits);
+  /// \brief Call this to set the num. of data bits.
+  void SetNumDataBits(NumDataBits numDataBits);
 
-            /// \brief      Call this to set the parity.
-            void SetParity(Parity parity);
+  /// \brief Call this to set the parity.
+  void SetParity(Parity parity);
 
-            void SetNumStopBits(NumStopBits numStopBits);
+  void SetNumStopBits(NumStopBits numStopBits);
 
+  /// \brief Enables/disables echo.
+  /// \param value Pass in true to enable echo, false to disable echo.
+  void SetEcho(bool value);
 
+  /// \brief Opens the COM port for use.
+  /// \throws VulcanSerial::Exception if device cannot be opened.
+  /// \note Must call this before you can configure the COM port.
+  /// \param timeout_ms Set to -1 to infinite timeout,or >0 to wait for data for a
+  /// specified number of milliseconds). Timeout will
+  /// be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
+  /// 25500ms (another Linux API restriction).
+  void Open(int32_t timeout_ms = -1);
 
-            /// \brief		Enables/disables echo.
-            /// \param		value		Pass in true to enable echo, false to disable echo.
-            void SetEcho(bool value);
+  /// \brief Closes the COM port.
+  void Close();
 
-            /// \brief		Opens the COM port for use.
-            /// \throws		VulcanSerial::Exception if device cannot be opened.
-            /// \note		Must call this before you can configure the COM port.
-            /// \param      timeout_ms  Set to -1 to infinite timeout,or >0 to wait for data for a specified number of milliseconds). Timeout will
-            ///             be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
-            ///             25500ms (another Linux API restriction).
-            void Open(int32_t timeout_ms = -1);
+  /// Wirte Function: This is a piece of shit.
+  /// Maybe you can use templates instead of function overloading
+  /// \brief Sends a text message over the com port.
+  /// \param data The data that will be written to the COM port.
+  /// \throws VulcanSerial::Exception if state != OPEN.
+  void Write(const std::string & data);
 
-            /// \brief		Closes the COM port.
-            void Close();
+  void Write(const uint8_t * data, size_t length);
 
-            /// Wirte Function: This is a piece of shit. Maybe you can use templates instead of function overloading
-            /// \brief		Sends a text message over the com port.
-            /// \param		data		The data that will be written to the COM port.
-            /// \throws		VulcanSerial::Exception if state != OPEN.
-            void Write(const std::string& data);
+  void WriteChar(const unsigned char c);
 
-            void Write(const uint8_t *data, size_t length);
-            
-            void WriteChar(const unsigned char c);
-            
-            /// \brief		Sends a binary message over the com port.
-            /// \param		data		The data that will be written to the COM port.
-            /// \throws		VulcanSerial::Exception if state != OPEN.
-            void WriteBinary(const std::vector<uint8_t>& data);
+  /// \brief Sends a binary message over the com port.
+  /// \param data The data that will be written to the COM port.
+  /// \throws VulcanSerial::Exception if state != OPEN.
+  void WriteBinary(const std::vector<uint8_t> & data);
 
-            
-            /// \brief		Use to read text from the COM port.
-            /// \param		data		The object the read characters from the COM port will be saved to.
-            /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
-            ///                 to wait indefinitely for new data.
-            /// \throws		VulcanSerial::Exception if state != OPEN.
-            void Read(std::string& data);
+  /// \brief Use to read text from the COM port.
+  /// \param data The object the read characters from the COM port will be saved to.
+  /// \param wait_ms The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
+  /// to wait indefinitely for new data.
+  /// \throws VulcanSerial::Exception if state != OPEN.
+  void Read(std::string & data);
 
-            int ReadChar (void);
-            /// \brief		Use to read binary data from the COM port.
-            /// \param		data		The object the read uint8_t bytes from the COM port will be saved to.
-            /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
-            ///                 to wait indefinitely for new data.
-            /// \throws		VulcanSerial::Exception if state != OPEN.
-            void ReadBinary(std::vector<uint8_t>& data);
+  int ReadChar(void);
+  /// \brief Use to read binary data from the COM port.
+  /// \param data The object the read uint8_t bytes from the COM port will be saved to.
+  /// \param wait_ms The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
+  /// to wait indefinitely for new data.
+  /// \throws VulcanSerial::Exception if state != OPEN.
+  void ReadBinary(std::vector<uint8_t> & data);
 
-			/// \brief		Use to get number of bytes available in receive buffer.
-            /// \returns    The number of bytes available in the receive buffer (ready to be read).
-            /// \throws		VulcanSerial::Exception if state != OPEN.
-            int32_t Available();
+  // \brief Use to get number of bytes available in receive buffer.
+  // \returns The number of bytes available in the receive buffer (ready to be read).
+  // VulcanSerial::Exception if state != OPEN.
+  int32_t Available();
 
-            /// \brief          Use to get the state of the serial port
-            /// \returns        The state of the serial port
-            State GetState();
-
-    
-        };
+  /// \brief          Use to get the state of the serial port
+  /// \returns        The state of the serial port
+  State GetState();
+};
 
 }  // namespace VulcanSerial
-
