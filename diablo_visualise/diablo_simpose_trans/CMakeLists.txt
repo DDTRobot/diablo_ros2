@@ -37,9 +37,9 @@ set(dependencies
 
 set(executable_name motor_trans_node)
 
-add_executable(${executable_name} 
+add_executable(${executable_name}
       src/motor_pos_trans.cpp
-  )
+)
 
 ament_target_dependencies(${executable_name} ${dependencies})
 

@@ -1,7 +1,6 @@
 #include "diablo_utils/diablo_tools/osdk_header.hpp"
 #include "diablo_utils/diablo_tools/osdk_vehicle.hpp"
 #include "diablo_utils/diablo_tools/osdk_telemetry.hpp"
-#include "diablo_utils/diablo_tools/osdk_virtual_rc.hpp"
 
 using namespace DIABLO::OSDK;
 
@@ -172,9 +171,6 @@ uint8_t Telemetry::configUpdate(const bool save)
         (uint8_t*)&msg, sizeof(OSDK_Set_Push_Data_Freq_t));
 
     memset(frequency_flag, OSDK_PUSH_DATA_NO_CHANGE, 7);
-
-    // printf("config update\n");
-
     return 0;
 }
 
@@ -253,7 +249,6 @@ void Telemetry::SDKConnectMonitor(void)
 void Telemetry::SerialDisconnectHandle(void)
 {
     memset(&this->status, 0, sizeof(OSDK_Push_Data_Status_t));
-    vehicle->virtual_rc->SerialDisconnectHandle();
     vehicle->movement_ctrl->SerialDisconnectHandle();
     std::cerr<<"OSDK Serial Receive Timeout Occured!"<<std::endl;
 }
@@ -262,7 +257,6 @@ void Telemetry::SerialHandle(void)
 {
     while(true)
     {
-        //printf("%u\n",newcome);
         std::unique_lock<std::mutex> lock(vehicle->hal->serial_rx_mtx);
         OSDK_Push_Data_Flag_t* flag = (OSDK_Push_Data_Flag_t*)(vehicle->hal->serialWaitRXDataS(lock, OSDK_DATA_SET, OSDK_PUSH_DATA_ID));
         if(flag == NULL)
@@ -283,16 +277,8 @@ void Telemetry::SerialHandle(void)
         {
             memcpy(&this->status, pData, sizeof(OSDK_Push_Data_Status_t));
             vehicle->movement_ctrl->CtrlStatusMonitorHandle(status.ctrl_mode);
-            vehicle->virtual_rc->CtrlStatusMonitorHandle(status.ctrl_mode);
             pData += sizeof(OSDK_Push_Data_Status_t);
             setNewcomeFlag(0x40);
-	        /*
-            if(this->status.error != 0)
-            {
-                std::cerr<<"ROBOT STATUS ERROR. PLEASE CHECK IT OUT !!!"<<this->status.error<<std::endl;
-                exit(0);
-            }
-            */
             if(log_flag & 1 << TOPIC_STATUS)    statusLog(status);
         }
         if(flag->quaternion)
@@ -300,9 +286,6 @@ void Telemetry::SerialHandle(void)
             memcpy(&this->quaternion, pData, sizeof(OSDK_Push_Data_Quaternion_t));
             pData += sizeof(OSDK_Push_Data_Quaternion_t);
             setNewcomeFlag(0x20);
-
-            //printf("q");
-
             if(log_flag & 1 << TOPIC_QUATERNION)    quaternionLog(quaternion);
         }
         if(flag->accl)
@@ -310,9 +293,6 @@ void Telemetry::SerialHandle(void)
             memcpy(&this->accl, pData, sizeof(OSDK_Push_Data_XYZ_t));
             pData += sizeof(OSDK_Push_Data_XYZ_t);
             setNewcomeFlag(0x10);
-
-            //printf("a");
-
             if(log_flag & 1 << TOPIC_ACCL)  acclLog(accl);
         }
         if(flag->gyro)
@@ -320,9 +300,6 @@ void Telemetry::SerialHandle(void)
             memcpy(&this->gyro, pData, sizeof(OSDK_Push_Data_XYZ_t));
             pData += sizeof(OSDK_Push_Data_XYZ_t);
             setNewcomeFlag(0x08);
-
-            //printf("g");
-
             if(log_flag & 1 << TOPIC_GYRO)  gyroLog(gyro);
         }
         if(flag->RC)
@@ -330,9 +307,6 @@ void Telemetry::SerialHandle(void)
             memcpy(&this->rc, pData, sizeof(OSDK_Push_Data_RC_t));
             pData += sizeof(OSDK_Push_Data_RC_t);
             setNewcomeFlag(0x04);
-
-            //printf("rc\n");
-
             if(log_flag & 1 << TOPIC_RC)    rcLog(rc);
         }
         if(flag->power)

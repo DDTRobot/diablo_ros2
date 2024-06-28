@@ -4,7 +4,7 @@
   <name>diablo_simpose_trans</name>
   <version>1.0.0</version>
   <description> Converting motor angle data into URDF display angle</description>
-  <maintainer email="vulcanyjx@todo.com">vulcanyjx</maintainer>
+  <maintainer email="vulcanyjx@todo.com">vulcan</maintainer>
   <license>Apache License, Version 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
