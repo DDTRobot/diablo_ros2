@@ -15,7 +15,11 @@
 #include "mission_panel.h"
 
 #include <memory>
+<<<<<<< HEAD
+#include "unistd.h"
+=======
 
+>>>>>>> 67a684b70db424c49caea5813a47e0e0359b4918
 namespace diablo_rviz2_control_plugin
 {
 MissionPanel::MissionPanel(QWidget * parent) : rviz_common::Panel(parent)
@@ -106,8 +110,13 @@ float MissionPanel::map(float x, float in_min, float in_max, float out_min, floa
 
 void MissionPanel::set_height(int height)
 {
+<<<<<<< HEAD
+  // missionMsg.cmd_id = CMD_BODY_UP;
+  missionMsg.value.up = map((float)height, 22.0, 49.0, 0.0, 1.0);
+=======
   missionMsg.cmd_id = CMD_BODY_UP;
   missionMsg.value = map((float)height, 22.0, 49.0, 0.0, 1.0);
+>>>>>>> 67a684b70db424c49caea5813a47e0e0359b4918
   // heightMsg.value = ((int)(map((float)height,22.0,49.0,0.0,1.0)*10))/(10.0);
   mission_pub_->publish(missionMsg);
   height_label_->setText(QString::number(height));
@@ -121,12 +130,25 @@ bool MissionPanel::event(QEvent * event)
 
 void MissionPanel::set_mode(int mode_id)
 {
+<<<<<<< HEAD
+  missionMsg.value.up = 1.0;
+  if (mode_id) {
+    missionMsg.mode_mark=true;
+    missionMsg.mode.stand_mode = true;
+  } else {
+    missionMsg.mode_mark=true;
+    missionMsg.mode.stand_mode = false;
+=======
   missionMsg.value = 0.0;
   if (mode_id) {
     missionMsg.cmd_id = CMD_STAND_UP;
   } else {
     missionMsg.cmd_id = CMD_STAND_DOWN;
+>>>>>>> 67a684b70db424c49caea5813a47e0e0359b4918
   }
+  mission_pub_->publish(missionMsg);
+  rclcpp::sleep_for(std::chrono::milliseconds(10));
+  missionMsg.mode_mark=false;
   mission_pub_->publish(missionMsg);
   // std::cout<<"Changed mode to "<< (mode_id>0? "MANUAL":"DEFAULT " )<< std::endl;
 }
