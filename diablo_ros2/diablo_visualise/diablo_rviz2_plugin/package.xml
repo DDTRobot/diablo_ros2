@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>diablo_rviz2_control_plugin</name>
+  <version>1.0.0</version>
+  <description>Rviz2 plugin for diablo</description>
+  <maintainer email="vulcanyjx@todo.com">vulcan</maintainer>
+  <license>Apache License, Version 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>qtbase5-dev</build_depend>
+
+  <exec_depend>libqt5-core</exec_depend>
+  <exec_depend>libqt5-gui</exec_depend>
+  <exec_depend>libqt5-opengl</exec_depend>
+  <exec_depend>libqt5-widgets</exec_depend>
+
+  <depend>pluginlib</depend>
+  <depend>std_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>motion_msgs</depend>
+  <depend>resource_retriever</depend>
+  <depend>rviz_common</depend>
+  <depend>rviz_rendering</depend>
+  <depend>tinyxml_vendor</depend>
+  <depend>urdf</depend>
+  <!-- <depend>visualization_msgs</depend> -->
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <rviz plugin="${prefix}/plugins_description.xml"/>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
