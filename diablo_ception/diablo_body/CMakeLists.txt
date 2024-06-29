@@ -20,6 +20,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(motion_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(ception_msgs REQUIRED)
 find_package(diablo_utils REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 
@@ -29,6 +30,7 @@ set(library_name ${PROJECT_NAME}_core)
 
 set(dependencies
   rclcpp
+  ception_msgs
   sensor_msgs
   motion_msgs
   diablo_utils
@@ -43,10 +45,7 @@ add_library(${library_name} SHARED
 )
 
 ament_target_dependencies(${library_name}
-  rclcpp
-  sensor_msgs
-  diablo_utils
-  builtin_interfaces
+  ${dependencies}
 )
 
 

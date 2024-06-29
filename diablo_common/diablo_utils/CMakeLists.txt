@@ -37,7 +37,6 @@ add_library(${library_name} SHARED
   src/diablo_tools/osdk_movement.cpp
   src/diablo_tools/osdk_telemetry.cpp
   src/diablo_tools/osdk_vehicle.cpp
-  src/diablo_tools/osdk_virtual_rc.cpp
 )
 
 ament_target_dependencies(${library_name}

@@ -161,34 +161,42 @@ void TeleopButton::set_angular_speed(double value) { target_angular_velocity_ = 
 
 void TeleopButton::set_vel(const char & key)
 {
+  motion_msgs::msg::MotionCtrl missionMsg;
   switch (key) {
     case 'w':
       target_direction_ = CMD_GO_FORWARD;
       target_speed_ = target_linear_velocity_;
+      missionMsg.value.forward=target_linear_velocity_;
       break;
     case 'a':
       target_direction_ = CMD_GO_LEFT;
       target_speed_ = target_angular_velocity_;
+      missionMsg.value.left=target_angular_velocity_;
       break;
     case 's':
       target_direction_ = CMD_GO_FORWARD;
       target_speed_ = -1.0 * target_linear_velocity_;
+      missionMsg.value.forward=-1.0*target_linear_velocity_;
       break;
     case 'd':
       target_direction_ = CMD_GO_LEFT;
       target_speed_ = -1.0 * target_angular_velocity_;
+      missionMsg.value.left=-1.0*target_angular_velocity_;
       break;
     case 'q':
       target_direction_ = CMD_ROLL_RIGHT;
       target_speed_ = -0.2;
+      missionMsg.value.roll= -0.2;
       break;
     case 'e':
       target_direction_ = CMD_ROLL_RIGHT;
       target_speed_ = 0.2;
+      missionMsg.value.roll= -0.2;
       break;
     case 'z':
       target_direction_ = CMD_PITCH;
       target_speed_ = 0.5;
+      missionMsg.value.pitch = 0.5;
       break;
     case 'x':
       restore_pose();
@@ -196,10 +204,10 @@ void TeleopButton::set_vel(const char & key)
     case 'c':
       target_direction_ = CMD_PITCH;
       target_speed_ = -0.5;
+      missionMsg.value.pitch = -0.5;      
       break;
     case ' ':
-      target_direction_ = 0;
-      target_speed_ = 0.0;
+      missionMsg.value.up = 1.0;
     default:
       break;
   }
@@ -209,31 +217,33 @@ void TeleopButton::set_vel(const char & key)
 
   angular_velocity_ = target_angular_velocity_ *
                       ((key == 'q') + (key == 'a') + -1 * (key == 'e') + -1 * (key == 'd'));
+  if (cmd_topic_selected_) {
+    missionMsg.value.up = 1.0;
+    cmd_pub_->publish(missionMsg);
+  }                  
 }
 
 void TeleopButton::restore_pose()
 {
-  motion_msgs::msg::MotionCtrl cmd_msg;
+  motion_msgs::msg::MotionCtrl missionMsg;
   if (cmd_topic_selected_) {
-    cmd_msg.cmd_id = CMD_ROLL_RIGHT;
-    cmd_msg.value = 0.0;
-    cmd_pub_->publish(cmd_msg);
+    missionMsg.value.roll=0.0;
+    cmd_pub_->publish(missionMsg);
     usleep(1000 * 100);
-    cmd_msg.cmd_id = CMD_PITCH;
-    cmd_msg.value = 0.0;
-    cmd_pub_->publish(cmd_msg);
+    missionMsg.value.pitch=0.0;
+    cmd_pub_->publish(missionMsg);
   }
 }
-void TeleopButton::send_vel()
-{
-  motion_msgs::msg::MotionCtrl cmd_msg;
-  cmd_msg.cmd_id = target_direction_;
-  cmd_msg.value = target_speed_;
+// void TeleopButton::send_vel()
+// {
+//   motion_msgs::msg::MotionCtrl missionMsg;
+//   // // missionMsg.cmd_id = target_direction_;
+//   // // missionMsg.value = target_speed_;
 
-  if (cmd_topic_selected_) {
-    cmd_pub_->publish(cmd_msg);
-  }
-}
+//   // if (cmd_topic_selected_) {
+//   //   cmd_pub_->publish(missionMsg);
+//   // }
+// }
 
 void TeleopButton::update_topic(int pos)
 {
