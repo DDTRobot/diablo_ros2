@@ -37,9 +37,9 @@ set(dependencies
 
 set(executable_name diablo_ctrl_node)
 
-add_executable(${executable_name}
+add_executable(${executable_name} 
       src/diablo_ctrl.cpp
-)
+  )
 
 ament_target_dependencies(${executable_name} ${dependencies})
 # ament_target_dependencies(${library_name} ${dependencies})
@@ -71,3 +71,4 @@ ament_export_include_directories(include)
 ament_export_libraries(${library_name})
 ament_export_dependencies(${dependencies})
 ament_package()
+

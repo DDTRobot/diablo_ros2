@@ -73,7 +73,7 @@ public Q_SLOTS:
 private Q_SLOTS:
   void discover_topics();
   void update_topic(int pos);
-  void send_vel();
+  // void send_vel();
   void set_linear_speed(double value);
   void set_angular_speed(double value);
   void restore_pose();
